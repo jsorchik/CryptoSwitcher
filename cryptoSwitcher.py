@@ -233,6 +233,7 @@ while True:
 
     #...and now save the keyfile in case the script is aborted.
     if enableBTCE:
+        handler.setNextNonce(key,time.time())
         handler.save(key_file)            
     print 'Sleeping for 1 hour'
     time.sleep(3600)
