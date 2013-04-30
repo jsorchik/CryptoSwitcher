@@ -106,22 +106,33 @@ coins['nvc'].willingToSell= Config.getboolean('Sell','sellNVC')
 
 
 def sellCoin(coin, tradeapi):
-    r = tradeapi.getInfo()
-    balance = getattr(r, 'balance_'+coin)
-    if balance > 0:
-        #i.e. if we're selling and we have some to sell... 
-        asks, bids = btceapi.getDepth(coin + '_btc')
-        tr = tradeapi.trade(coin + '_btc', 'sell',bids[0][0],balance)       
-        #This sells at the highest price someone currently has a bid lodged for.
-        #It's possible that this won't totally deplete our reserves, but any 
-        #unsold immediately will be left on the book, and will probably sell shortly.
+    try:
+        r = tradeapi.getInfo()
+        balance = getattr(r, 'balance_'+coin)
+        #TODO - check for BTCE mins instead of 0
+        if balance > 0.0001:
+            #i.e. if we're selling and we have some to sell... 
+            asks, bids = btceapi.getDepth(coin + '_btc')
+            print "Selling", balance, coin, "at the rate of", bids[0][0], "..."
+            tr = tradeapi.trade(coin + '_btc', 'sell',bids[0][0],balance)
+            print "Sold!"
+            #This sells at the highest price someone currently has a bid lodged for.
+            #It's possible that this won't totally deplete our reserves, but any 
+            #unsold immediately will be left on the book, and will probably sell shortly.
+    except:
+        print "Something is wrong with Trade API"
+    
 
 if enableBTCE:
     key_file = './key' 
     handler = btceapi.KeyHandler(key_file)
     key = handler.keys.keys()[0]
     secret, nonce =  handler.keys[handler.keys.keys()[0]]
-    authedAPI = btceapi.TradeAPI(key, secret, nonce)
+    try:
+        authedAPI = btceapi.TradeAPI(key, secret, nonce)
+        print "API authed successfully"
+    except:
+        print "Error authing API"
 
 while True:
     if source=='coinchoose':
