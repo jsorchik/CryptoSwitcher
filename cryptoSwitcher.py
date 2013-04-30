@@ -139,7 +139,6 @@ coins['dvc'].willingToSell= Config.getboolean('Sell','sellDVC')
 coins['ixc'].willingToSell= Config.getboolean('Sell','sellIXC')
 
 
-<<<<<<< HEAD
 def sellCoin(coin, tradeapi):
     try:
         r = tradeapi.getInfo()
@@ -157,7 +156,6 @@ def sellCoin(coin, tradeapi):
     except:
         print "Something is wrong with Trade API"
     
-=======
 def sellCoinBTCE(coin, tradeapi):
     r = tradeapi.getInfo()
     try:
@@ -172,7 +170,6 @@ def sellCoinBTCE(coin, tradeapi):
         #This sells at the highest price someone currently has a bid lodged for.
         #It's possible that this won't totally deplete our reserves, but any
         #unsold immediately will be left on the book, and will probably sell shortly.
->>>>>>> upstream/master
 
 def sellCoinVircurex(coin):
     pair = vircurexapi.Pair(coin+'_btc')
@@ -365,13 +362,9 @@ while True:
 
     #...and now save the keyfile in case the script is aborted.
     if enableBTCE:
-<<<<<<< HEAD
         handler.setNextNonce(key,time.time())
         handler.save(key_file)            
-    print 'Sleeping for 1 hour'
-    time.sleep(3600)
-    print time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-=======
+        time.sleep(3600)
         handler.setNextNonce(key,time.time()) #Thanks, jsorchik
         handler.save(key_file)
 
@@ -415,4 +408,3 @@ while True:
     #sleep
     print '\nSleeping for %d Minutes...' % (idletime)
     time.sleep(idletime*60)
->>>>>>> upstream/master
